@@ -1,0 +1,26 @@
+const CHACHE_NAME = 'cache-v1';
+
+// 在一个新的service-worker安装就就会被触发
+self.addEventListener('install',event=>{
+    console.log('install: ', event);
+    // 打开一个缓存空间
+    event.waitUntil(caches.open(CHACHE_NAME).then(cache => {
+        // 写入缓存的资源
+        cache.addAll([
+          '/',
+          './index.css'
+        ])
+    }));
+});
+
+// 激活,代表service-worker事件被正式启动
+
+self.addEventListener('activate',event=>{
+    console.log('activate: ', event);
+    event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('fetch',event=>{
+    console.log('fetch: ', event);
+    // 去cache里面找资源，找到就返回，找不到就利用网络请求去拿
+});
